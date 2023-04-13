@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const {NotImplementedError} = require('../extensions/index.js');
 
 /**
  * Create transformed array based on the control sequences that original
@@ -13,11 +13,35 @@ const { NotImplementedError } = require('../extensions/index.js');
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-function transform(/* arr */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function transform(arr) {
+	let a = [];
+	if (Array.isArray(arr)) {
+		for (let index = 0; index < arr.length; index++) {
+			switch (arr[index]) {
+				case '--discard-prev':
+					if (a.length) {a.length = a.length - 1;}
+					break;
+				case '--double-prev':
+					if (arr[index - 1]) {a.push(arr[index - 1]);}
+					break;
+				case '--double-next':
+					if (arr[index + 1]) {a.push(arr[index + 1]);}
+					break;
+				case '--discard-next':
+					index = index + 2;
+					break;
+
+				default:
+					a.push(arr[index]);
+					break;
+			}
+		}
+		return a;
+	} else {
+		throw new Error('\'arr\' parameter must be an instance of the Array!');
+	}
 }
 
 module.exports = {
-  transform
+	transform
 };
